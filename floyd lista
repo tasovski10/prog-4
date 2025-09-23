@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+int getw(const vector<vector<pair<int,int>>>& g, int u, int v) {
+    for (auto& e : g[u]) if (e.first == v) return e.second;
+    return INT_MAX;
+}
+
+void setw(vector<vector<pair<int,int>>>& g, int u, int v, int w) {
+    for (auto& e : g[u]) {
+        if (e.first == v) {
+            e.second = w;
+            return;
+        }
+    }
+    g[u].push_back({v, w});
+}
+
+void selfloops(vector<vector<pair<int,int>>>& g, int n) {
+    for (int i = 0; i < n; i++)
+        if (getw(g, i, i) == INT_MAX) g[i].push_back({i, 0});
+}
+
+void floyd(vector<vector<pair<int,int>>>& g, int n) {
+    for (int k = 0; k < n; k++)
+        for (int i = 0; i < n; i++) {
+            int ik = getw(g, i, k);
+            if (ik == INT_MAX) continue;
+            for (int j = 0; j < n; j++) {
+                int kj = getw(g, k, j);
+                if (kj == INT_MAX) continue;
+                int ij = getw(g, i, j);
+                if (ik + kj < ij) setw(g, i, j, ik + kj);
+            }
+        }
+}
+
+void printd(const vector<vector<pair<int,int>>>& g, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int d = getw(g, i, j);
+            if (d == INT_MAX) cout << "INF\t";
+            else cout << d << " ";
+        }
+        cout << "\n";
+    }
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<pair<int,int>>> g(n);
+    for (int i = 0; i < m; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        g[u].push_back({v, w});
+    }
+    selfloops(g, n);
+    floyd(g, n);
+    printd(g, n);
+    return 0;
+}
