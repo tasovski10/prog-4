@@ -3,7 +3,7 @@
 #include <algorithm>
 using namespace std;
 
-const int INF = 1e9;
+const int inf = INT_MAX;
 
 int n;
 vector<vector<int>> cap, flow;
@@ -20,11 +20,11 @@ void push(int u, int v) {
 }
 
 void relabel(int u) {
-    int minH = INF;
+    int minH = inf;
     for (int v = 0; v < n; v++)
         if (cap[u][v] - flow[u][v] > 0)
             minH = min(minH, height[v]);
-    if (minH < INF)
+    if (minH < inf)
         height[u] = minH + 1;
 }
 
