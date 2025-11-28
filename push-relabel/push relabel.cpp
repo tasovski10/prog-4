@@ -2,9 +2,6 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
-
-
-
 int n;
 vector<vector<int>> cap, flow;
 vector<int> height, excess;
@@ -77,8 +74,6 @@ int main() {
         cin >> u >> v >> c;
         cap[u][v] = c;
     }
-
     cin >> s >> t;
-
     cout << maxFlow(s, t) << "\n";
 }
